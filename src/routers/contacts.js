@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createContactController, deleteContactController, getContactsByIdController, getContactsController, patchContactController, upsertContactController } from '../controllers/contacts.js';
+import { createContactController, deleteContactController, getContactsByIdController, getContactsController, patchContactController, putContactController } from '../controllers/contacts.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 
 
@@ -13,7 +13,7 @@ router.post("/", ctrlWrapper(createContactController));
 
 router.delete("/:contactId", ctrlWrapper(deleteContactController));
 
-router.put("/:contactId", ctrlWrapper(upsertContactController)); 
+router.put("/:contactId", ctrlWrapper(putContactController)); 
 
 router.patch("/:contactId", ctrlWrapper(patchContactController)); 
 

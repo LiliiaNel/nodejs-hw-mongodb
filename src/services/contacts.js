@@ -22,21 +22,21 @@ export const deleteContact = async (contactId) => {
   return result;
 };
 
-export const updateContact = async (contactId, payload, options = {}) => { 
-const rawResult = await Contact.findOneAndUpdate(
-    { _id: contactId },
-    payload,
-    {
-      new: true,
-      includeResultMetadata: true,
-      ...options,
-    },
-  );
-
-  if (!rawResult || !rawResult.value) return null;
+export async function replaceContact(contactId, payload) {
+  const result = await Contact.findOneAndUpdate( { _id: contactId }, payload, {
+    new: true,
+    upsert: true,
+    overwrite: true,
+    includeResultMetadata: true,
+    runValidators: true,
+  });
 
   return {
-    contact: rawResult.value,
-    isNew: Boolean(rawResult?.lastErrorObject?.upserted),
+    value: result.value,
+    updatedExisting: result.lastErrorObject.updatedExisting,
   };
+}
+
+export function updateContact(contactId, payload) {
+  return Contact.findByIdAndUpdate(contactId, payload, { new: true });
 }

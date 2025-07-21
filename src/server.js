@@ -10,15 +10,20 @@ import { notFoundHandler } from "./middlewares/notFoundHandler.js";
 
 export default function setupServer () {
 const app = express();
-const logger = pinoHttp();
+const logger = pinoHttp({
+    transport: {
+      target: 'pino-pretty',
+      options: {
+        colorize: true,
+        translateTime: 'SYS:standard',
+        singleLine: true,
+      },
+    },
+  });
+
 app.use(logger);
-// app.use(
-//     pino({
-//       transport: {
-//         target: 'pino-pretty',
-//       },
-//     }),
-//   );
+
+app.use(logger);
 
 app.use(cors());
 app.use(express.json());
