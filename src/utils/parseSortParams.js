@@ -1,27 +1,25 @@
+import { SORT_ORDER } from "../constants/index.js";
+
 function parseSortBy(value) {
+
   if (typeof value === 'undefined') {
     return '_id';
   }
-
   const keys = ['_id', 'name', 'createdAt', 'updatedAt'];
 
-  if (keys.includes(value) !== true) {
-    return '_id';
-  }
-
-  return value;
+  return keys.includes(value) ? value : '_id';
+  
 }
 
 function parseSortOrder(value) {
+
+  const orders = [SORT_ORDER.ASC, SORT_ORDER.DESC];
+
   if (typeof value === 'undefined') {
-    return 'asc'; 
+    return SORT_ORDER.ASC;
   }
 
-  if (value !== 'asc' && value !== 'desc') {
-    return 'asc'; 
-  }
-
-  return value;
+  return orders.includes(value) ? value : SORT_ORDER.ASC;
 }
 
 
