@@ -1,10 +1,16 @@
 import { Contact } from "../models/contactSchema.js";
 
-export async function getAllContacts(page, perPage) {
+export async function getAllContacts(page, perPage, sortBy, sortOrder, filter) {
   const skip = page > 0 ? ( ( page - 1 ) * perPage ) : 0 ;
 
-  const [total, contacts] = await Promise.all([Contact.countDocuments(),
-   Contact.find({}).skip(skip).limit(perPage),]);
+  const contactQuery =  Contact.find({});
+
+  if (typeof filter.isFavourite !== 'undefined') {
+    contactQuery.where('isFavourite').equals(filter.isFavourite);
+  }
+
+  const [total, contacts] = await Promise.all([Contact.find({}).merge(contactQuery).countDocuments(),
+   contactQuery.sort({[sortBy]: sortOrder}).skip(skip).limit(perPage),]);
 
   const totalPages = Math.ceil(total / perPage);
   return {
