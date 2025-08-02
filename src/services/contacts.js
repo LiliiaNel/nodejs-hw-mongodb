@@ -9,18 +9,18 @@ export async function getAllContacts(page, perPage, sortBy, sortOrder, filter) {
     contactQuery.where('isFavourite').equals(filter.isFavourite);
   }
 
-  const [total, contacts] = await Promise.all([Contact.find({}).merge(contactQuery).countDocuments(),
+  const [totalItems, currentPageContacts] = await Promise.all([Contact.find({}).merge(contactQuery).countDocuments(),
    contactQuery.sort({[sortBy]: sortOrder}).skip(skip).limit(perPage),]);
 
-  const totalPages = Math.ceil(total / perPage);
+  const totalPages = Math.ceil(totalItems / perPage);
   return {
-    contacts,
-    total,
+    data: currentPageContacts,
     page,
     perPage,
+    totalItems,
     totalPages,
-    hasNextPage: totalPages>page,
     hasPreviousPage: page>1,
+    hasNextPage: totalPages>page,
   }
 };
 

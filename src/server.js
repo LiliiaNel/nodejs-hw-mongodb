@@ -1,7 +1,6 @@
 import cors from "cors"; 
 import express from 'express';
 import pinoHttp from 'pino-http';
-// import pino from 'pino';
 import contactsRouter from './routers/contacts.js'
 import { getEnvVariable } from "./utils/getEnvVariable.js";
 import { errorHandler } from "./middlewares/errorHandler.js";

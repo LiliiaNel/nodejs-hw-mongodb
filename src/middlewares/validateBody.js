@@ -7,7 +7,7 @@ export default function validateBody (schema) {
             console.log(result);
             next();
         } catch (error) {
-            const errors = error.details.map(detail => details.message);
+            const errors = error.details.map(detail => detail.message);
             next(new createHttpError.BadRequest(errors));
         }
     
