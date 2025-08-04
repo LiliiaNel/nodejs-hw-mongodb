@@ -1,7 +1,9 @@
 import cors from "cors"; 
 import express from 'express';
 import pinoHttp from 'pino-http';
-import contactsRouter from './routers/contacts.js'
+import cookieParser from 'cookie-parser';
+import contactsRouter from './routers/contacts.js';
+import authRouter from './routers/auth.js';
 import { getEnvVariable } from "./utils/getEnvVariable.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { notFoundHandler } from "./middlewares/notFoundHandler.js";
@@ -25,7 +27,9 @@ app.use(logger);
 app.use(logger);
 
 app.use(cors());
+app.use(cookieParser());
 app.use(express.json());
+app.use("/auth", authRouter);
 app.use("/contacts", contactsRouter); 
 app.use(notFoundHandler);
 app.use(errorHandler);
