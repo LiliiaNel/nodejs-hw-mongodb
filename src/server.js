@@ -7,6 +7,7 @@ import authRouter from './routers/auth.js';
 import { getEnvVariable } from "./utils/getEnvVariable.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { notFoundHandler } from "./middlewares/notFoundHandler.js";
+import { authenticate } from "./middlewares/authenticate.js";
 
 
 export default function setupServer () {
@@ -29,7 +30,7 @@ app.use(logger);
 app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
-app.use("/auth", authRouter);
+app.use("/auth", authenticate, authRouter);
 app.use("/contacts", contactsRouter); 
 app.use(notFoundHandler);
 app.use(errorHandler);
