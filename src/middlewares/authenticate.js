@@ -6,22 +6,21 @@ import { UsersCollection } from '../models/user.js';
 export const authenticate = async (req, res, next) => {
   const authHeader = req.get('Authorization');
 
-  if (!authHeader) {
-    next(createHttpError(401, 'Please provide Authorization header'));
+  if (typeof authHeader !== 'string') {
+    next(createHttpError(401, 'Please provide access token'));
     return;
   }
+  
+  const [bearer, accessToken] = authHeader.split(' ', 2);
 
-  const bearer = authHeader.split(' ')[0];
-  const token = authHeader.split(' ')[1];
-
-  if (bearer !== 'Bearer' || !token) {
+  if (bearer !== 'Bearer' || typeof accessToken !== 'string') {
     next(createHttpError(401, 'Auth header should be of type Bearer'));
     return;
   }
 
-  const session = await SessionsCollection.findOne({ accessToken: token });
+  const session = await SessionsCollection.findOne({ accessToken });
 
-  if (!session) {
+  if (session === null) {
     next(createHttpError(401, 'Session not found'));
     return;
   }
@@ -31,16 +30,17 @@ export const authenticate = async (req, res, next) => {
 
   if (isAccessTokenExpired) {
     next(createHttpError(401, 'Access token expired'));
+    return;
   }
 
   const user = await UsersCollection.findById(session.userId);
 
-  if (!user) {
+  if (user === null) {
     next(createHttpError(401));
     return;
   }
 
-  req.user = user;
+  req.user = { id: user._id, name: user.name };
 
   next();
 };

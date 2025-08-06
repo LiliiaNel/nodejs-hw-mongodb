@@ -1,6 +1,6 @@
 import { ContactCollection } from "../models/contact.js";
 
-export async function getAllContacts(page, perPage, sortBy, sortOrder, filter) {
+export async function getAllContacts(page, perPage, sortBy, sortOrder, filter, userId) {
   const skip = page > 0 ? ( ( page - 1 ) * perPage ) : 0 ;
 
   const contactQuery =  ContactCollection.find({});
@@ -8,6 +8,8 @@ export async function getAllContacts(page, perPage, sortBy, sortOrder, filter) {
   if (typeof filter.isFavourite !== 'undefined') {
     contactQuery.where('isFavourite').equals(filter.isFavourite);
   }
+
+  contactQuery.where("userId").equals(userId);
 
   const [totalItems, currentPageContacts] = await Promise.all([ContactCollection.find({}).merge(contactQuery).countDocuments(),
    contactQuery.sort({[sortBy]: sortOrder}).skip(skip).limit(perPage),]);
@@ -24,8 +26,8 @@ export async function getAllContacts(page, perPage, sortBy, sortOrder, filter) {
   }
 };
 
-export async function getContactById(contactId) {
-  return ContactCollection.findById(contactId);
+export async function getContactById(contactId, userId) {
+  return ContactCollection.findOne({_id: contactId, userId});
 };
 
 
@@ -34,16 +36,16 @@ export const createContact = async (payload) => {
   return contact;
 };
 
-export const deleteContact = async (contactId) => {
+export const deleteContact = async (contactId, userId) => {
   const result = await ContactCollection.findOneAndDelete({
-    _id: contactId,
+    _id: contactId, userId
   });
 
   return result;
 };
 
-export async function replaceContact(contactId, payload) {
-  const result = await ContactCollection.findOneAndUpdate( { _id: contactId }, payload, {
+export async function replaceContact(contactId, payload, userId) {
+  const result = await ContactCollection.findOneAndUpdate( { _id: contactId, userId }, payload, {
     new: true,
     upsert: true,
     overwrite: true,
@@ -57,6 +59,6 @@ export async function replaceContact(contactId, payload) {
   };
 }
 
-export function updateContact(contactId, payload) {
-  return ContactCollection.findByIdAndUpdate(contactId, payload, { new: true });
+export function updateContact(contactId, payload, userId) {
+  return ContactCollection.findByIdAndUpdate(contactId, userId, payload, { new: true });
 }

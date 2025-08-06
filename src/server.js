@@ -30,8 +30,8 @@ app.use(logger);
 app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
-app.use("/auth", authenticate, authRouter);
-app.use("/contacts", contactsRouter); 
+app.use("/auth", authRouter);
+app.use("/contacts", authenticate, contactsRouter); 
 app.use(notFoundHandler);
 app.use(errorHandler);
 

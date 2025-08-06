@@ -1,3 +1,4 @@
+
 import mongoose from "mongoose";
 
 const contactsSchema = new mongoose.Schema({
@@ -23,9 +24,10 @@ const contactsSchema = new mongoose.Schema({
        enum: ["home", "work", "personal"],
        default: "personal",
     },
-     parentId: {
+     userId: {
       type: mongoose.Schema.Types.ObjectId, 
-      ref: 'users' 
+      ref: 'users',
+      required: true, 
     },  
 },
     { 
