@@ -60,5 +60,5 @@ export async function replaceContact(contactId, payload, userId) {
 }
 
 export function updateContact(contactId, payload, userId) {
-  return ContactCollection.findByIdAndUpdate(contactId, userId, payload, { new: true });
+  return ContactCollection.findOneAndUpdate({ _id: contactId, userId }, payload, { new: true });
 }
