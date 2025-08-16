@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { createContact, updateContact, getAllContacts, getContactById, deleteContact, replaceContact,  } from "../services/contacts.js";
 import createHttpError from 'http-errors';
-
+import 'dotenv/config';
 import { getEnvVariable } from '../utils/getEnvVariable.js';
 import {parsePaginationParams} from '../utils/parsePaginationParams.js';
 import { parseSortParams } from "../utils/parseSortParams.js";
