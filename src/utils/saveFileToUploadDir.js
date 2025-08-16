@@ -8,10 +8,6 @@ export const saveFileToUploadDir = async (file) => {
     path.join(TEMP_UPLOAD_DIR, file.filename),
     path.join(UPLOAD_DIR, file.filename),
   );
-  console.log('file object:', file);
-console.log('from:', path.join(TEMP_UPLOAD_DIR, file.filename));
-console.log('to:', path.join(UPLOAD_DIR, file.filename));
-
 
   return `${getEnvVariable('APP_DOMAIN')}/uploads/${file.filename}`;
 };
