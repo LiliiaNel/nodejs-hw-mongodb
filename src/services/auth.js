@@ -5,6 +5,7 @@ import path from 'node:path';
 import fs from 'node:fs/promises';
 import bcrypt from 'bcrypt';
 import createHttpError from 'http-errors';
+import { randomBytes } from 'crypto';
 
 import jwt from 'jsonwebtoken';
 
@@ -16,10 +17,6 @@ import { getEnvVariable } from '../utils/getEnvVariable.js';
 import { sendEmail } from '../utils/sendMail.js';
 
 
-// const REQUEST_PASSWORD_RESET_TEMPLATE = fs.readFileSync(
-//   path.resolve('src/templates/reset-password-reset.hbs'),
-//   { encoding: 'utf-8' },
-// );
 
 export const registerUser = async (payload) => {
   const user = await UsersCollection.findOne({ email: payload.email });
@@ -169,3 +166,28 @@ export const requestPasswordReset = async (payload) => {
   await SessionsCollection.deleteMany({ userId: user._id });
 };
 
+
+
+
+export async function loginOrRegister(email, name) {
+  let user = await UsersCollection.findOne({ email });
+
+  if (user === null) {
+    const password = await bcrypt.hash(
+      randomBytes(30).toString('base64'),
+      10,
+    );
+
+    user = await UsersCollection.create({ name, email, password });
+  }
+
+  await SessionsCollection.deleteOne({ userId: user._id });
+
+  return SessionsCollection.create({
+    userId: user._id,
+    accessToken: randomBytes(30).toString('base64'),
+    refreshToken: randomBytes(30).toString('base64'),
+    accessTokenValidUntil: new Date(Date.now() + 10 * 60 * 1000), 
+    refreshTokenValidUntil: new Date(Date.now() + 24 * 60 * 60 * 1000), 
+  });
+}

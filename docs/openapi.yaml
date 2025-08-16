@@ -1,0 +1,41 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Contacts API
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  description: This is documentation for Contacts API
+tags:
+  - name: Contacts
+    description: Operations with contacts
+servers:
+  - url: http://127.0.0.1:3000
+  - url: https://contacts-api-anh3.onrender.com
+paths:
+  /contacts:
+    get:
+      $ref: '../swagger/paths/contacts/get.yaml'
+    post:
+      $ref: '../swagger/paths/contacts/post.yaml'
+  /contacts/{id}:
+    get:
+      $ref: '../swagger/paths/contacts/{id}/get.yaml'
+    patch:
+      $ref: '../swagger/paths/contacts/{id}/patch.yaml'
+    delete:
+      $ref: '../swagger/paths/contacts/{id}/delete.yaml'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    contact:
+      $ref: '../swagger/components/schemas/contact.yaml'
+  responses:
+    Unauthorized:
+      $ref: '../swagger/components/responses/401.yaml'
+    ServerError:
+      $ref: '../swagger/components/responses/500.yaml'

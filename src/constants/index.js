@@ -1,5 +1,6 @@
 import path from 'node:path';
 import 'dotenv/config';
+import fs from 'node:fs';
 
 export const SORT_ORDER = {
   ASC: 'asc',
@@ -27,3 +28,7 @@ export const CLOUDINARY = {
   API_KEY: 'API_KEY',
   API_SECRET: 'API_SECRET',
 };
+
+export const SWAGGER_DOCUMENT = JSON.parse(
+  fs.readFileSync(path.join('docs', 'swagger.json'), 'utf-8'),
+);
