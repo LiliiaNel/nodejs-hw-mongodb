@@ -34,7 +34,7 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 
-app.use('/api-docs', swaggerDocs());
+app.use('/api-docs', ...swaggerDocs());
 app.use('/uploads', express.static(UPLOAD_DIR));
 app.use("/auth", authRouter);
 app.use("/contacts", authenticate, contactsRouter); 
