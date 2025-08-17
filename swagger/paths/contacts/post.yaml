@@ -5,7 +5,8 @@ operationId: createContact
 description: Create contact
 security:
   - bearerAuth: []
-requestBody:
+requestBody: 
+  required: true
   content:
     multipart/form-data:
       schema:
@@ -14,7 +15,6 @@ requestBody:
           - name
           - phoneNumber
           - contactType
-          - photo
         properties:
           name:
             type: string
@@ -24,6 +24,10 @@ requestBody:
             type: string
             description: Phone number of the contact
             example: "+36301234567"
+          email:
+            type: string
+            description: Email of the contact
+            example: "example@mail.com"
           contactType:
             type: string
             description: Type of contact
@@ -33,9 +37,13 @@ requestBody:
               - personal
             example: personal
             default: personal
+          isFavourite:
+            description: Indicates whether the contact is marked as a favourite (true) or not (false)
+            type: boolean
           photo:
             type: string
-            description: URL of the contact's photo (optional)
+            format: binary
+            description: upload the contact's photo
             example: "https://res.cloudinary.com/demo/image/upload/v1234567890/sample.jpg"
             default: null
 
