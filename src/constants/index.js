@@ -29,6 +29,5 @@ export const CLOUDINARY = {
   API_SECRET: 'API_SECRET',
 };
 
-export const SWAGGER_DOCUMENT = JSON.parse(
-  fs.readFileSync(path.join('docs', 'swagger.json'), 'utf-8'),
-);
+
+export const SWAGGER_DOCUMENT_PATH = path.join(process.cwd(), 'docs', 'swagger.json'); 
