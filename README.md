@@ -1,8 +1,8 @@
-## Contacts API
+# Contacts API
 
 A simple RESTful API for managing contacts, created as part of my training in Node.js, Express, and MongoDB (Mongoose). 
 
-# Features
+## Features
 
 - Add, view, update, and delete contacts
 
@@ -12,6 +12,6 @@ A simple RESTful API for managing contacts, created as part of my training in No
 
 - Basic error handling and validation
 
-# Tech Stack
+## Tech Stack
 
 Node.js / Express / MongoDB & Mongoose
